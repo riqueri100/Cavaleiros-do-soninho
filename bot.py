@@ -106,4 +106,4 @@ async def alvaro(ctx):
 
 
 
-client.run('ODEwMjg3OTE2MjQzODc3OTA4.YChdbQ.wSFlcL7MPx6GRfn0WmQN97J5Vpk')
+client.run('token')
