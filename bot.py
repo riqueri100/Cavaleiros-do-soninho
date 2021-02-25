@@ -112,6 +112,7 @@ async def fotinho(ctx,*args):
     foto = requests.get(user_url)
     with open('fotinha.webp', 'wb') as f:
         f.write(foto.content)
+    await ctx.send(file=discord.File('fotinha.webp'))
 
 
 
