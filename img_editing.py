@@ -1,4 +1,4 @@
-from PIL import Image, ImageOps, PixelAccess
+from PIL import Image, ImageOps
 
 def make_cite(finput, foutput):
     with Image.open(finput) as user_avatar:
@@ -8,34 +8,24 @@ def make_cite(finput, foutput):
             cite_image.paste(region, box)
             cite_image.save(foutput, "JPEG")
 
-make_cite('fotinha.webp', 'foto_nova.jpg')
-
-def get_sepia_pixel(red, green, blue, alpha):
-    # This is a really popular implementation
-    tRed = ((0.759 * red) + (0.398 * green) + (0.194 * blue))
-    tGreen = ((0.676 * red) + (0.354 * green) + (0.173 * blue))
-    tBlue = ((0.524 * red) + (0.277 * green) + (0.136 * blue))
-
-    # Return sepia color
-    return tRed, tGreen, tBlue, alpha
+#make_cite('fotinha.webp', 'foto_nova.jpg')
 
 
-# Convert an image to sepia
-def convert_sepia(image):
-    # Get size
-    width, height = image.size
+def sepia(image_path):
+    img = Image.open(image_path)
+    width, height = img.size
 
-    # Create new Image and a Pixel Map
-    new = Image.new('RGB', image.size)
-    pixels = new.load()
+    pixels = img.load() # create the pixel map
 
-    # Convert each pixel to sepia
-    for i in range(0, width, 1):
-        for j in range(0, height, 1):
-            p = PixelAccess.getpixel(image, i, j)
-            pixels[i, j] = get_sepia_pixel(p[0], p[1], p[2], 255)
+    for py in range(height):
+        for px in range(width):
+            r, g, b = img.getpixel((px, py))
 
-    # Return new image
-    return new
+            tr = int(0.393 * r + 0.769 * g + 0.189 * b)
+            tg = int(0.349 * r + 0.686 * g + 0.168 * b)
+            tb = int(0.272 * r + 0.534 * g + 0.131 * b)
 
-convert_sepia(Image.open('foto_nova.jpg')).show()
+            pixels[px, py] = (tr,tg,tb)
+
+    return img
+#sepia('foto_nova.jpg').show()
