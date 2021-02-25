@@ -9,6 +9,7 @@ async def naninha(ctx):
      
 
 schedule = []
+token = open('token.txt', 'r').read()
 
 
 
@@ -106,4 +107,4 @@ async def alvaro(ctx):
 
 
 
-client.run('token')
+client.run(token)
