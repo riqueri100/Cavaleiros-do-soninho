@@ -1,11 +1,12 @@
 import discord, requests
 import os, tempfile
 import random
+from img_editing import make_cite
 from datetime import datetime, date, timedelta
 from discord.ext import commands, tasks
 
-
-client = commands.Bot(command_prefix = '.')
+prefixo = '.'
+client = commands.Bot(command_prefix = prefixo)
 async def naninha(ctx):
      await ctx.send('hora de dormir ai galera bora')
      
@@ -118,11 +119,26 @@ async def citeadd(ctx, *args):
 async def cite(ctx):
     autor_id = ctx.message.mentions[0].id
     autor_nick = ctx.message.mentions[0].nick
-    with open(f'cite/{autor_id}.txt', 'r') as f:
-        citations = f.readlines()
-        rnumber = random.randint(0,len(citations) - 1)
-        text = citations[rnumber][:-1]
-        await ctx.send(f'\"{text}\"\n{autor_nick}')
+    autor_url = ctx.message.mentions[0].avatar_url
+    text = str()
+    try:
+        with open(f'cite/{autor_id}.txt', 'r') as f:
+            citations = f.readlines()
+            rnumber = random.randint(0,len(citations) - 1)
+            text = citations[rnumber][:-1]
+    except Exception:
+        await ctx.send(f"<@{autor_id}> não possue nenhuma citação.\nUse o comando {prefixo}citeadd para adiciona-las.")
+        return 0
+    #await ctx.send(f'\"{text}\"\n{autor_nick}')
+    foto = requests.get(autor_url)
+    tmpfile, path = tempfile.mkstemp(suffix = '.webp')
+    try:
+        with os.fdopen(tmpfile, 'wb') as f:
+            f.write(foto.content)
+        make_cite(path, f'\"{text}\"', autor_nick)
+        await ctx.send(file=discord.File(path))
+    finally:
+        os.remove(path)
 
 @client.command()
 async def fotinho(ctx,*args):
@@ -134,6 +150,7 @@ async def fotinho(ctx,*args):
     try:
         with os.fdopen(tmpfile, 'wb') as f:
             f.write(foto.content)
+        make_cite(path,path)
         await ctx.send(file=discord.File(path))
     finally:
         os.remove(path)
