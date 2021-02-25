@@ -1,5 +1,6 @@
 import discord, requests
 import os, tempfile
+import random
 from datetime import datetime, date, timedelta
 from discord.ext import commands, tasks
 
@@ -112,6 +113,16 @@ async def citeadd(ctx, *args):
     with open(f'cite/{autor}.txt', 'a') as f:
         f.write(texto + '\n')
     print(texto)
+
+@client.command()
+async def cite(ctx):
+    autor_id = ctx.message.mentions[0].id
+    autor_nick = ctx.message.mentions[0].nick
+    with open(f'cite/{autor_id}.txt', 'r') as f:
+        citations = f.readlines()
+        rnumber = random.randint(0,len(citations) - 1)
+        text = citations[rnumber][:-1]
+        await ctx.send(f'\"{text}\"\n{autor_nick}')
 
 @client.command()
 async def fotinho(ctx,*args):
