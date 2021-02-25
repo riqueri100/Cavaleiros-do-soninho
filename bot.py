@@ -106,10 +106,17 @@ async def alvaro(ctx):
     await ctx.send('rei do spoiler')
 
 @client.command()
+async def citeadd(ctx, *args):
+    autor = ctx.message.mentions[0].id
+    texto = ' '.join(args[1:])
+    with open(f'cite/{autor}.txt', 'a') as f:
+        f.write(texto + '\n')
+    print(texto)
+
+@client.command()
 async def fotinho(ctx,*args):
     user = ctx.message.mentions[0]
     user_url = user.avatar_url
-    #file_name = str(ctx.author.id) + "_" + datetime.now().strftime('%H-%M-%S-%f') + ".webp"
     await ctx.send(f'Baixando fotinha de {user} no link {user_url}.')
     foto = requests.get(user_url)
     tmpfile, path = tempfile.mkstemp(suffix = '.webp')
