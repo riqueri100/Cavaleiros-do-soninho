@@ -1,4 +1,5 @@
 import discord, requests
+import os, tempfile
 from datetime import datetime, date, timedelta
 from discord.ext import commands, tasks
 
@@ -108,12 +109,15 @@ async def alvaro(ctx):
 async def fotinho(ctx,*args):
     user = ctx.message.mentions[0]
     user_url = user.avatar_url
+    #file_name = str(ctx.author.id) + "_" + datetime.now().strftime('%H-%M-%S-%f') + ".webp"
     await ctx.send(f'Baixando fotinha de {user} no link {user_url}.')
     foto = requests.get(user_url)
-    with open('fotinha.webp', 'wb') as f:
-        f.write(foto.content)
-    await ctx.send(file=discord.File('fotinha.webp'))
-
-
+    tmpfile, path = tempfile.mkstemp(suffix = '.webp')
+    try:
+        with os.fdopen(tmpfile, 'wb') as f:
+            f.write(foto.content)
+        await ctx.send(file=discord.File(path))
+    finally:
+        os.remove(path)
 
 client.run(token)
