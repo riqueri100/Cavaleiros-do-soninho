@@ -3,4 +3,5 @@
 Bot pika do Discord muito bem programado sem nenhum defeito
 
 ## Pre-requisitos
-    pip install discord
+São precisos os seguintes pacotes para executar o código em Python:
+    pip install discord pillow requests

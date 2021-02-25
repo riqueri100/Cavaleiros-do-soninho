@@ -1,4 +1,4 @@
-import discord
+import discord, requests
 from datetime import datetime, date, timedelta
 from discord.ext import commands, tasks
 
@@ -104,6 +104,14 @@ async def eio(ctx):
 async def alvaro(ctx):
     await ctx.send('rei do spoiler')
 
+@client.command()
+async def fotinho(ctx,*args):
+    user = ctx.message.mentions[0]
+    user_url = user.avatar_url
+    await ctx.send(f'Baixando fotinha de {user} no link {user_url}.')
+    foto = requests.get(user_url)
+    with open('fotinha.webp', 'wb') as f:
+        f.write(foto.content)
 
 
 
