@@ -22,11 +22,11 @@ async def on_ready():
     print('tudo certo.')
     a.start()
 
-@client.event
-async def on_message(message):
-    if "ão" in message.content:
-        await message.channel.send('Meu pau na sua mão')
-        return
+#@client.event
+#async def on_message(message):
+#    if "ão" in message.content:
+#        await message.channel.send('Meu pau na sua mão')
+#        return
 
 @tasks.loop(seconds=5)
 async def a():
