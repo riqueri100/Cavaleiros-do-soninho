@@ -113,13 +113,13 @@ async def citeadd(ctx, *args):
     texto = ' '.join(args[1:])
     with open(f'cite/{autor}.txt', 'a') as f:
         f.write(texto + '\n')
-    print(texto)
 
 @client.command()
-async def cite(ctx):
+async def cite(ctx, *args):
     autor_id = ctx.message.mentions[0].id
     autor_nick = ctx.message.mentions[0].nick
     autor_url = ctx.message.mentions[0].avatar_url
+    print(autor_id, autor_nick, autor_url)
     text = str()
     try:
         with open(f'cite/{autor_id}.txt', 'r') as f:
@@ -129,7 +129,6 @@ async def cite(ctx):
     except Exception:
         await ctx.send(f"<@{autor_id}> não possue nenhuma citação.\nUse o comando {prefixo}citeadd para adiciona-las.")
         return 0
-    #await ctx.send(f'\"{text}\"\n{autor_nick}')
     foto = requests.get(autor_url)
     tmpfile, path = tempfile.mkstemp(suffix = '.webp')
     try:
@@ -137,21 +136,7 @@ async def cite(ctx):
             f.write(foto.content)
         make_cite(path, f'\"{text}\"', autor_nick)
         await ctx.send(file=discord.File(path))
-    finally:
-        os.remove(path)
-
-@client.command()
-async def fotinho(ctx,*args):
-    user = ctx.message.mentions[0]
-    user_url = user.avatar_url
-    await ctx.send(f'Baixando fotinha de {user} no link {user_url}.')
-    foto = requests.get(user_url)
-    tmpfile, path = tempfile.mkstemp(suffix = '.webp')
-    try:
-        with os.fdopen(tmpfile, 'wb') as f:
-            f.write(foto.content)
-        make_cite(path,path)
-        await ctx.send(file=discord.File(path))
+        
     finally:
         os.remove(path)
 

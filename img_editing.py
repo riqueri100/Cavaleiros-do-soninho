@@ -3,8 +3,10 @@ from textwrap import wrap
 
 def sepia(img):
     width, height = img.size
+    print(width, height)
 
     pixels = img.load() # create the pixel map
+    print(pixels)
 
     for py in range(height):
         for px in range(width):
@@ -13,9 +15,7 @@ def sepia(img):
             tr = int(0.393 * r + 0.769 * g + 0.189 * b)
             tg = int(0.349 * r + 0.686 * g + 0.168 * b)
             tb = int(0.272 * r + 0.534 * g + 0.131 * b)
-
             pixels[px, py] = (tr,tg,tb)
-
     return img
 
 def escrita(img,text,autor):
@@ -31,6 +31,7 @@ def make_cite(finput, text, autor):
     with Image.open('assets/images/cite_background.jpg') as cite_image:
         with Image.open(finput) as user_avatar:
             box = (100, 100, 600, 600)
+            user_avatar = user_avatar.convert('RGB')
             region = sepia(user_avatar.resize((500,500)))
             cite_image.paste(region, box)
         output = escrita(cite_image, text, autor)
