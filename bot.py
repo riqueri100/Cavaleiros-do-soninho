@@ -119,7 +119,6 @@ async def cite(ctx, *args):
     autor_id = ctx.message.mentions[0].id
     autor_nick = ctx.message.mentions[0].nick
     autor_url = ctx.message.mentions[0].avatar_url
-    print(autor_id, autor_nick, autor_url)
     text = str()
     try:
         with open(f'cite/{autor_id}.txt', 'r') as f:

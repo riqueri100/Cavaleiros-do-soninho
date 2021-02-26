@@ -3,10 +3,8 @@ from textwrap import wrap
 
 def sepia(img):
     width, height = img.size
-    print(width, height)
 
     pixels = img.load() # create the pixel map
-    print(pixels)
 
     for py in range(height):
         for px in range(width):
