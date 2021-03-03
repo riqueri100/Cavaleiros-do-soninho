@@ -117,7 +117,7 @@ async def citeadd(ctx, *args):
 @client.command()
 async def cite(ctx, *args):
     autor_id = ctx.message.mentions[0].id
-    autor_nick = ctx.message.mentions[0].nick
+    autor_nick = ctx.message.mentions[0].display_name
     autor_url = ctx.message.mentions[0].avatar_url
     text = str()
     try:
